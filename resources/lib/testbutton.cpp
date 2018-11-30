@@ -1,0 +1,350 @@
+#include "button.h"
+#include "combobox.h"
+#include "numbox.h"
+#include "regempleados.h"
+
+int main()
+{  //titulo
+	gotoxy(30,2);
+   cprintf("Mantenimiento de Empleados");
+
+   gotoxy(1,5);
+   cprintf("Codigo:");
+   numbox *codigo = new numbox(10);
+
+   //nombre
+   gotoxy(1,7);
+   cprintf("Nombre:");
+   textbox *nombre = new textbox(35);
+
+   //sexo
+   gotoxy(2,10);
+   cprintf("Sexo:");
+   list_radiobutton *radio = new list_radiobutton();
+   radio->add("Masculino");
+   radio->add("Femenino");
+   radio->box(1,11);
+
+   //departamento
+   gotoxy(1,16);
+   cprintf("Departamento:");
+   numbox *dep = new numbox(10);
+
+   //sueldo
+	gotoxy(1,18);
+   cprintf("Sueldo:");
+   numbox *sueldo = new numbox(16);
+
+   //botones
+	button *butt1 = new button("<<");
+   butt1->show(3,24);
+   button *butt2 = new button("<");
+   butt2->show(9,24);
+  // gotoxy(15,25);
+   //cprintf("Pg 1 de 2");
+   button *butt3 = new button(">");
+   butt3->show(14,24);
+   button *butt4 = new button(">>");
+   butt4->show(19,24);
+   button *butt5= new button ("Nuevo");
+   butt5->show(25,24);
+   button *butt6= new button ("Editar");
+   butt6->show(34,24);
+   button *butt7= new button ("Salir");
+   butt7->show(44,24);
+
+   //archivo
+
+   regEmpleado db("empleados.dbf");
+   Registro datos;
+   ptrNodorLst actual;
+
+   actual = db.Inicio();
+   if(actual != NULL)
+   {
+	   
+   codigo->name( actual->datos.codigo);
+   nombre->name( actual->datos.nombre);
+   dep->name(actual->datos.iddepto);
+   sueldo->name(actual->datos.sueldo);
+   }
+   codigo->show(10,5,0);
+   nombre->show(9,7);
+   dep->show(14,16,0);
+   sueldo->show(8,18,1);
+
+   //control
+   int key=0;
+   int tab=0;
+
+   do{
+      switch (tab)
+      {
+      	case 0:
+         		butt2->focus();
+               textbackground(BLACK);
+               butt2->show();
+
+         		butt1->focus();
+               textbackground(CYAN);
+         		butt1->show();
+               butt1->focus();
+               textbackground(BLACK);
+
+               key=getkey();
+               if(key==ENT)
+               {
+               	if(actual!=db.Inicio())
+                  {
+                  	actual = db.Inicio();
+                      codigo->name(actual->datos.codigo);
+                  codigo->show();
+                  nombre->name(actual->datos.nombre);
+                  nombre->show();
+                  radio->box();
+                  dep->name(actual->datos.iddepto);
+                  dep->show();
+                  sueldo->name(actual->datos.sueldo);
+                  sueldo->show();
+                  }
+
+               }
+               break;
+         case 1:
+         		butt1->focus();
+               textbackground(BLACK);
+               butt1->show();
+
+               butt3->focus();
+               textbackground(BLACK);
+               butt3->show();
+
+         		butt2->focus();
+               textbackground(CYAN);
+         		butt2->show();
+               butt2->focus();
+               textbackground(BLACK);
+
+               key=getkey();
+               if(key==ENT)
+               {
+               	if(actual->ptrAtras)
+                  {
+                  actual = actual->ptrAtras;
+                  codigo->name(actual->datos.codigo);
+                  codigo->show();
+                  nombre->name(actual->datos.nombre);
+                  nombre->show();
+                  radio->box();
+                  dep->name(actual->datos.iddepto);
+                  dep->show();
+                  sueldo->name(actual->datos.sueldo);
+                  sueldo->show();
+                  }
+
+               }
+               break;
+         case 2:
+         		butt2->focus();
+               textbackground(BLACK);
+               butt2->show();
+
+               butt4->focus();
+               textbackground(BLACK);
+               butt4->show();
+
+         		butt3->focus();
+               textbackground(CYAN);
+         		butt3->show();
+               butt3->focus();
+               textbackground(BLACK);
+
+               key=getkey();
+                      if(key==ENT)
+               {
+               	if(actual->ptrSiguiente)
+                  {
+                  	actual = actual->ptrSiguiente;
+                  codigo->name(actual->datos.codigo);
+                  codigo->show();
+                  nombre->name(actual->datos.nombre);
+                  nombre->show();
+                  radio->box();
+                  dep->name(actual->datos.iddepto);
+                  dep->show();
+                  sueldo->name(actual->datos.sueldo);
+                  sueldo->show();
+                  }
+
+               }
+               break;
+         case 3:
+         		butt3->focus();
+               textbackground(BLACK);
+               butt3->show();
+
+               butt5->focus();
+               textbackground(BLACK);
+               butt5->show();
+
+         		butt4->focus();
+               textbackground(CYAN);
+         		butt4->show();
+               butt4->focus();
+               textbackground(BLACK);
+
+               key=getkey();
+               if(key==ENT)
+               {
+                    ptrNodorLst temp = actual;
+                    while(temp->ptrSiguiente)
+                    {
+                    		temp = temp->ptrSiguiente;
+                    }
+               	if(actual!=temp)
+                  {
+                  	actual = temp;
+                      codigo->name(actual->datos.codigo);
+                  codigo->show();
+                  nombre->name(actual->datos.nombre);
+                  nombre->show();
+                  radio->box();
+                  dep->name(actual->datos.iddepto);
+                  dep->show();
+                  sueldo->name(actual->datos.sueldo);
+                  sueldo->show();
+                  }
+
+               }
+               break;
+         case 4:
+         		butt4->focus();
+               textbackground(BLACK);
+               butt4->show();
+
+               butt6->focus();
+               textbackground(BLACK);
+               butt6->show();
+
+         		butt5->focus();
+               textbackground(CYAN);
+         		butt5->show();
+               butt5->focus();
+               textbackground(BLACK);
+               key = getkey();
+               if(key==ENT)
+               {
+               	codigo->name(NULL);
+                  codigo->show();
+                  nombre->name("");
+                  nombre->show();
+                  radio->box();
+                  dep->name(NULL);
+                  dep->show();
+                  sueldo->name(NULL);
+                  sueldo->show();
+
+               	codigo->focus();
+                  nombre->focus(0);
+                  radio->focus();
+                  dep->focus();
+                  sueldo->focus();
+
+                  datos.codigo = codigo->name();
+                  strcpy(datos.nombre,nombre->name().c_str());
+                  if(radio->last()->checked())
+                  {
+                  	datos.genero=0;
+                  }
+                  else
+                  {
+                  	datos.genero=1;
+                  }
+
+                  datos.iddepto=dep->name();
+
+                  datos.sueldo = sueldo->name();
+
+                  if(!db.Existe(datos.codigo))
+                  {
+                  	db.Insertar(&datos);
+                  }
+
+               }
+               break;
+         case 5:
+         		butt5->focus();
+               textbackground(BLACK);
+               butt5->show();
+
+               butt7->focus();
+               textbackground(BLACK);
+               butt7->show();
+
+         		butt6->focus();
+               textbackground(CYAN);
+         		butt6->show();
+               butt6->focus();
+               textbackground(BLACK);
+
+               key=getkey();
+               if(key == ENT)
+               {
+               	codigo->focus();
+                  actual->datos.codigo = codigo->name();
+                  nombre->focus(1);
+                  for (int i = 0; i < nombre->name().size(); i++)  //copying rest of the first string to a separate array
+						{
+								actual->datos.nombre[i] = nombre->name()[i];
+                   }
+                  radio->focus();
+                  dep->focus();
+                  actual->datos.iddepto = dep->name();
+                  sueldo->focus();
+                  actual->datos.sueldo = sueldo->name();
+               }
+               break;
+         case 6:
+         		butt6->focus();
+               textbackground(BLACK);
+               butt6->show();
+
+         		butt7->focus();
+               textbackground(CYAN);
+         		butt7->show();
+               butt7->focus();
+               textbackground(BLACK);
+
+               key=getkey();
+               if(key==ENT)
+               {
+                 butt7->checked(1);
+                 db.Guardar();
+               }
+         		break;
+      }
+
+      if(key==TAB && tab<6)
+      {
+      	tab++;
+      }
+
+      if(key == STAB && tab>0)
+      {
+      	tab--;
+      }
+
+   }while(((key!=ESC) && (!butt7->checked())));
+
+   delete butt1;
+   delete butt2;
+   delete butt3;
+   delete butt4;
+   delete butt5;
+   delete butt6;
+   delete butt7;
+   delete nombre;
+   delete radio;
+   delete dep;
+
+}
