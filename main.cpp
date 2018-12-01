@@ -7,11 +7,15 @@
 void main_menu();
 void ventas_menu_c();
 void ventas_menu_v();
+void historico_ventas_menu();
+void inventario_ventas_menu();
+
 
 void main()
 {
   //main_menu();
-  ventas_menu_v();
+  //ventas_menu_v();
+  historico_ventas_menu();
   gotoxy(89,5);getch();
 }
 
@@ -52,13 +56,53 @@ void ventas_menu_v()
   gotoxy(6,2);printf("INVENTARIO");gotoxy(35,2);printf("MODULO DE VENTAS");gotoxy(33,4);printf("--------------------");gotoxy(59,2);printf("FACTURA:%13d",0);
   gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:DD/MM/YYYY");
   gotoxy(23,5);printf("CLIENTE: %-26s","ABC");
-  gotoxy(24,6);printf("CANT.");gotoxy(32,6);printf("DESCRIPCION");gotoxy(57,6);printf("PRECIO UNIT");gotoxy(69,6);printf("TOTAL");
-  gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234.00);gotoxy(69,8);printf("%7.2f",1234567.00);
+  gotoxy(24,7);printf("CANT.");gotoxy(32,7);printf("DESCRIPCION");gotoxy(57,7);printf("PRECIO UNIT");gotoxy(69,7);printf("TOTAL");
+  gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234567.00);gotoxy(69,8);printf("%7.2f",1234567.00);
+  gotoxy(60,15);printf("SUBTOTAL:%7.2f",1234567.00);gotoxy(62,16);printf("IMPTO:%7.2f",1234567.00);gotoxy(61,16);printf("REGALIA:%7.2f",1234567.00);gotoxy(55,17);printf("TOTAL A PAGAR:%7.2f",1234567.00);
+  gotoxy(24,17);printf("FORMA DE PAGO:");
+  gotoxy(24,18);printf("[■] CREDITO [ ] CONTADO");
   fxrectangulo(2,3,20,18);
   gotoxy(7,19);printf("PAG 1/%d");
+  gotoxy(40,16);printf("PAG 1/%d");
   fxrectangulo(2,20,79,25);
   gotoxy(3,21);printf("OPCIONES: ");
   gotoxy(7,22);printf("F1  - ACEPTAR Y GUARDAR VENTA");gotoxy(42,22);printf("^v - AVANZAR/RETROCEDER EN LA LISTA");
   gotoxy(5,23);printf("ENTER - AGREGAR PRODUCTO");gotoxy(42,23);printf("<> - SIGUIENTE/PAGINA");
   gotoxy(5,24);printf("SUPR  - QUITAR PRODUCTO");gotoxy(41,24);printf("ESC - REGRESAR AL MENU ANTERIOR");
+}
+
+void historico_ventas_menu()
+{
+    gotoxy(2,2);printf("HISTORICO DE VENTAS");gotoxy(35,2);printf("MODULO DE VENTAS");gotoxy(33,4);printf("--------------------");gotoxy(59,2);printf("FACTURA:%13d",0);
+    gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:DD/MM/YYYY");
+    gotoxy(23,5);printf("CLIENTE: %-26s","ABC");
+    gotoxy(24,7);printf("CANT.");gotoxy(32,7);printf("DESCRIPCION");gotoxy(57,7);printf("PRECIO UNIT");gotoxy(69,7);printf("TOTAL");
+    gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234567.00);gotoxy(69,8);printf("%7.2f",1234567.00);
+    gotoxy(60,15);printf("SUBTOTAL:%7.2f",1234567.00);gotoxy(62,16);printf("IMPTO:%7.2f",1234567.00);gotoxy(61,16);printf("REGALIA:%7.2f",1234567.00);gotoxy(55,17);printf("TOTAL A PAGAR:%7.2f",1234567.00);
+    gotoxy(24,17);printf("FORMA DE PAGO:");
+    gotoxy(24,18);printf("[■] CREDITO [ ] CONTADO");
+    fxrectangulo(2,3,20,18);
+    gotoxy(7,19);printf("PAG 1/%d");
+    gotoxy(40,16);printf("PAG 1/%d");
+    fxrectangulo(2,20,79,23);
+    gotoxy(3,21);printf("OPCIONES: ");
+    gotoxy(7,22);printf("F1  - AUTORIZAR/ANULAR DE VENTAS");gotoxy(42,22);printf("ESC - VOLVER AL MENU PRINCIPAL");
+}
+
+void inventario_ventas_menu()
+{
+    gotoxy(2,2);printf("HISTORICO DE VENTAS");gotoxy(35,2);printf("MODULO DE VENTAS");gotoxy(33,4);printf("--------------------");gotoxy(59,2);printf("FACTURA:%13d",0);
+    gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:DD/MM/YYYY");
+    gotoxy(23,5);printf("CLIENTE: %-26s","ABC");
+    gotoxy(24,7);printf("CANT.");gotoxy(32,7);printf("DESCRIPCION");gotoxy(57,7);printf("PRECIO UNIT");gotoxy(69,7);printf("TOTAL");
+    gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234567.00);gotoxy(69,8);printf("%7.2f",1234567.00);
+    gotoxy(60,15);printf("SUBTOTAL:%7.2f",1234567.00);gotoxy(62,16);printf("IMPTO:%7.2f",1234567.00);gotoxy(61,16);printf("REGALIA:%7.2f",1234567.00);gotoxy(55,17);printf("TOTAL A PAGAR:%7.2f",1234567.00);
+    gotoxy(24,17);printf("FORMA DE PAGO:");
+    gotoxy(24,18);printf("[■] CREDITO [ ] CONTADO");
+    fxrectangulo(2,3,20,18);
+    gotoxy(7,19);printf("PAG 1/%d");
+    gotoxy(40,16);printf("PAG 1/%d");
+    fxrectangulo(2,20,79,23);
+    gotoxy(3,21);printf("OPCIONES: ");
+    gotoxy(7,22);printf("F1  - AUTORIZAR/ANULAR DE VENTAS");gotoxy(42,22);printf("ESC - VOLVER AL MENU PRINCIPAL");
 }
