@@ -1,7 +1,7 @@
-#if !defined(__PRODUCTOS_H)
-     #define __PRODUCTOS_H
+#if !defined(__INVENTARIO_H)
+     #define __Producto_H
 
-#if !defined(__CONIO_H)
+#if !defined(__INVENTARIO_H)
      #include <conio.h>
 #endif
 
@@ -9,29 +9,32 @@
      #include <string.h>
 #endif
 
-struct Contacto{
+struct Producto{
   int codigo;
   char nombre[30];
   float precio;
   int existencia;
-  struct Contacto *ptrAnterior;
-  struct Contacto *ptrSiguiente;
+  struct Producto *ptrAnterior;
+  struct Producto *ptrSiguiente;
 };
 
-typedef struct Contacto strContacto;
-typedef strContacto *ptrContacto;
+typedef struct Producto strProducto;
+typedef strProducto *ptrProducto;
+
+typedef struct Producto strProducto;
+typedef strProducto *ptrProducto;
 
 class productos{
 private:
-  ptrContacto ptrInicio;
+  ptrProducto ptrInicio;
   char *ruta_file;
   int num_codigo;
 public:
 productos(char ruta[100]);
 ~productos();
 bool EstaVacia();
-Insertar(char nombre[30], float precio,int existencia)
-ptrContacto InicioLista();
+void Insertar(char nombre[30],float precio, float existencia);
+ptrProducto InicioLista();
 };
 
 productos::productos(char *ruta)
@@ -44,7 +47,7 @@ productos::productos(char *ruta)
 
 productos::~productos()
 {
-  ptrContacto temp = NULL;
+  ptrProducto temp = NULL;
   while(ptrInicio != NULL)
   {
     temp = ptrInicio;
@@ -53,20 +56,29 @@ productos::~productos()
   }
 }
 
-void productos::Insertar(char nombre[30], float precio)
+void productos::Insertar(char nombre[30],float precio, float existencia)
 {
-	ptrContacto ptrNuevo;
-	ptrContacto ptrAnterior;
-	ptrContacto ptrActual;
+	ptrProducto ptrNuevo;
+	ptrProducto ptrAnterior;
+	ptrProducto ptrActual;
 
-	ptrNuevo = (ptrContacto) malloc(sizeof(strContacto));
+	ptrNuevo = (ptrProducto) malloc(sizeof(strProducto));
 
 	if(ptrNuevo != NULL)
   {
     num_codigo++;
+    struct Producto{
+      int codigo;
+      char nombre[30];
+      float precio;
+      int existencia;
+      struct Producto *ptrAnterior;
+      struct Producto *ptrSiguiente;
+    };
     ptrNuevo->codigo = num_codigo;
 		strcpy(ptrNuevo->nombre,nombre);
     ptrNuevo->precio = precio;
+    ptrNuevo->existencia = existencia;
 		ptrNuevo->ptrAnterior = NULL;
 		ptrNuevo->ptrSiguiente = NULL;
 		ptrAnterior = NULL;
@@ -110,9 +122,10 @@ bool productos::EstaVacia()
   return ptrInicio == NULL;
 }
 
-ptrContacto productos::InicioLista()
+ptrProducto productos::InicioLista()
 {
   return ptrInicio;
 }
+
 
 #endif

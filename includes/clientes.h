@@ -1,5 +1,5 @@
-#if !defined(__CLIENTES_H)
-     #define __CLIENTES_H
+#if !defined(__CLIENTE_H)
+     #define __CLIENTE_H
 
 #if !defined(__CONIO_H)
      #include <conio.h>
@@ -9,27 +9,27 @@
      #include <string.h>
 #endif
 
-struct Contacto{
+struct Cliente{
   int codigo;
   char nombre[30];
-  struct Contacto *ptrAnterior;
-  struct Contacto *ptrSiguiente;
+  struct Cliente *ptrAnterior;
+  struct Cliente *ptrSiguiente;
 };
 
-typedef struct Contacto strContacto;
-typedef strContacto *ptrContacto;
+typedef struct Cliente strCliente;
+typedef strCliente *ptrCliente;
 
 class clientes{
 private:
-  ptrContacto ptrInicio;
+  ptrCliente ptrInicio;
   char *ruta_file;
   int num_codigo;
 public:
 clientes(char ruta[100]);
 ~clientes();
 bool EstaVacia();
-Insertar(char nombre[30])
-ptrContacto InicioLista();
+void Insertar(char nombre[30]);
+ptrCliente InicioLista();
 };
 
 clientes::clientes(char *ruta)
@@ -42,7 +42,7 @@ clientes::clientes(char *ruta)
 
 clientes::~clientes()
 {
-  ptrContacto temp = NULL;
+  ptrCliente temp = NULL;
   while(ptrInicio != NULL)
   {
     temp = ptrInicio;
@@ -53,11 +53,11 @@ clientes::~clientes()
 
 void clientes::Insertar(char nombre[30])
 {
-	ptrContacto ptrNuevo;
-	ptrContacto ptrAnterior;
-	ptrContacto ptrActual;
+	ptrCliente ptrNuevo;
+	ptrCliente ptrAnterior;
+	ptrCliente ptrActual;
 
-	ptrNuevo = (ptrContacto) malloc(sizeof(strContacto));
+	ptrNuevo = (ptrCliente) malloc(sizeof(strCliente));
 
 	if(ptrNuevo != NULL)
   {
@@ -107,7 +107,7 @@ bool clientes::EstaVacia()
   return ptrInicio == NULL;
 }
 
-ptrContacto clientes::InicioLista()
+ptrCliente clientes::InicioLista()
 {
   return ptrInicio;
 }
