@@ -3,6 +3,10 @@
 #include <conio.h>
 #include <string.h>
 #include "C:\projects\ventas-cpp\pantallas.h"
+#include "C:\projects\ventas-cpp\includes\productos.h"
+// #include "C:\projects\ventas-cpp\includes\clientes.h"
+#include "C:\projects\ventas-cpp\includes\producto_en_venta.h"
+#include "C:\projects\ventas-cpp\includes\ventas.h"
 
 void main()
 {

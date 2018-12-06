@@ -1,5 +1,5 @@
-#if !defined(__PRODUCTOS_H)
-     #define __PRODUCTOS_H
+#if !defined(__VENTAS_H)
+     #define __VENTAS_H
 
 #if !defined(__CONIO_H)
      #include <conio.h>
@@ -9,32 +9,37 @@
      #include <string.h>
 #endif
 
-struct Producto{
-  int codigo;
-  char nombre[30];
-  float precio;
-  int existencia;
-  struct Producto *ptrAnterior;
-  struct Producto *ptrSiguiente;
+struct Ventas{
+  int id;
+  char cliente[30];
+  int forma_de_pago;
+  int fecha;
+  strProdVenta lista_productos[100];
+  char cai[30];
+  float regalia;
+  float subtotal; 
+  float total;
+  struct Ventas *ptrAnterior;
+  struct Ventas *ptrSiguiente;
 };
 
-typedef struct Producto strProducto;
-typedef strProducto *ptrProducto;
+typedef struct Ventas strVentas;
+typedef strVentas *ptrVentas;
 
-class productos{
+class ventas{
 private:
-  ptrProducto ptrInicio;
+  ptrVentas ptrInicio;
   char *ruta_file;
   int num_codigo;
 public:
-productos(char ruta[100]);
-~productos();
+ventas(char ruta[100]);
+~ventas();
 bool EstaVacia();
 Insertar(char nombre[30], float precio,int existencia)
-ptrProducto InicioLista();
+ptrVentas InicioLista();
 };
 
-productos::productos(char *ruta)
+ventas::ventas(char *ruta)
 {
   ptrInicio = NULL;
   num_codigo = 0;
@@ -42,9 +47,9 @@ productos::productos(char *ruta)
   strcpy(ruta_file,ruta);
 }
 
-productos::~productos()
+ventas::~ventas()
 {
-  ptrProducto temp = NULL;
+  ptrVentas temp = NULL;
   while(ptrInicio != NULL)
   {
     temp = ptrInicio;
@@ -53,26 +58,28 @@ productos::~productos()
   }
 }
 
-void productos::Insertar(char nombre[30], float precio)
+void ventas::Insertar(char nombre[30], float precio)
 {
-	ptrProducto ptrNuevo;
-	ptrProducto ptrAnterior;
-	ptrProducto ptrActual;
+	ptrVentas ptrNuevo;
+	ptrVentas ptrAnterior;
+	ptrVentas ptrActual;
 
-	ptrNuevo = (ptrProducto) malloc(sizeof(strProducto));
+	ptrNuevo = (ptrVentas) malloc(sizeof(strVentas));
 
 	if(ptrNuevo != NULL)
   {
     num_codigo++;
-    ptrNuevo->codigo = num_codigo;
-		strcpy(ptrNuevo->nombre,nombre);
-    ptrNuevo->precio = precio;
-		ptrNuevo->ptrAnterior = NULL;
-		ptrNuevo->ptrSiguiente = NULL;
-		ptrAnterior = NULL;
-		ptrActual = ptrInicio;
+    ptrNuevo->id = num_codigo
+    strcpy(ptrNuevo->cliente,cliente)
+    ptrNuevo->forma_de_pago = forma_de_pago
+    ptrNuevo->fecha = fecha;
+    ptrNuevo->lista_productos[0] = prd_ven1;
+    ptrNuevo->lista_productos[1] = prd_ven2;
+    strcpy(ptrNuevo->cai, cai);
+    ptrNuevo->regalia = regalia;
+    ptrNuevo->subtotal = subtotal;
 
-		while(ptrActual != NULL && strcmp(ptrActual->nombre,nombre) < 1)
+		while(ptrActual != NULL && strcmp(ptrActual->cliente,cliente) < 1)
     {
 			ptrAnterior = ptrActual;
 			ptrActual = ptrActual->ptrSiguiente;
@@ -105,12 +112,12 @@ void productos::Insertar(char nombre[30], float precio)
 	}
 }
 
-bool productos::EstaVacia()
+bool ventas::EstaVacia()
 {
   return ptrInicio == NULL;
 }
 
-ptrProducto productos::InicioLista()
+ptrVentas ventas::InicioLista()
 {
   return ptrInicio;
 }

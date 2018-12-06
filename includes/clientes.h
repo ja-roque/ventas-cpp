@@ -28,7 +28,7 @@ public:
 clientes(char ruta[100]);
 ~clientes();
 bool EstaVacia();
-Insertar(char nombre[30])
+Insertar(char nombre[30]);
 ptrContacto InicioLista();
 };
 
