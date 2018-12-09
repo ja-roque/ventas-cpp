@@ -21,9 +21,6 @@ struct Producto{
 typedef struct Producto strProducto;
 typedef strProducto *ptrProducto;
 
-typedef struct Producto strProducto;
-typedef strProducto *ptrProducto;
-
 class productos{
 private:
   ptrProducto ptrInicio;
@@ -35,6 +32,7 @@ productos(char ruta[100]);
 bool EstaVacia();
 void Insertar(char nombre[30],float precio, float existencia);
 ptrProducto InicioLista();
+void Imprimir(int x, int y, int page);
 };
 
 productos::productos(char *ruta)
@@ -47,7 +45,7 @@ productos::productos(char *ruta)
 
 productos::~productos()
 {
-  ptrProducto temp = NULL;
+  ptrProducto temp = ptrInicio;
   while(ptrInicio != NULL)
   {
     temp = ptrInicio;
@@ -125,6 +123,17 @@ bool productos::EstaVacia()
 ptrProducto productos::InicioLista()
 {
   return ptrInicio;
+}
+
+void productos::Imprimir(int x, int y, int page)
+{
+  ptrProducto Inic_Temp = ptrInicio;
+  while(Inic_Temp != NULL)
+  {
+    gotoxy(x,y);printf("%s",Inic_Temp->nombre);
+    y++;
+    Inic_Temp  = Inic_Temp->ptrSiguiente;
+  }
 }
 
 

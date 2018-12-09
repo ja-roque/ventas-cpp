@@ -30,6 +30,7 @@ clientes(char ruta[100]);
 bool EstaVacia();
 void Insertar(char nombre[30]);
 ptrCliente InicioLista();
+void Imprimir(int x, int y, int page);
 };
 
 clientes::clientes(char *ruta)
@@ -110,6 +111,17 @@ bool clientes::EstaVacia()
 ptrCliente clientes::InicioLista()
 {
   return ptrInicio;
+}
+
+void clientes::Imprimir(int x, int y, int page)
+{
+  ptrCliente Inic_Temp = ptrInicio;
+  while(Inic_Temp != NULL)
+  {
+    gotoxy(x,y);printf("%s",Inic_Temp->nombre);
+    y++;
+    Inic_Temp  = Inic_Temp->ptrSiguiente;
+  }
 }
 
 

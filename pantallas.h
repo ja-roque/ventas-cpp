@@ -54,7 +54,7 @@
      {
        gotoxy(6,2);printf("INVENTARIO");gotoxy(35,2);printf("MODULO DE VENTAS");gotoxy(33,4);printf("--------------------");gotoxy(59,2);printf("FACTURA:%13d",0);
        gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:DD/MM/YYYY");
-       gotoxy(23,5);printf("CLIENTE: %-26s","ABC");
+       gotoxy(23,5);printf("CLIENTE: ");
        gotoxy(24,7);printf("CANT.");gotoxy(32,7);printf("DESCRIPCION");gotoxy(57,7);printf("PRECIO UNIT");gotoxy(69,7);printf("TOTAL");
        gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234567.00);gotoxy(69,8);printf("%7.2f",1234567.00);
        gotoxy(60,15);printf("SUBTOTAL:%7.2f",1234567.00);gotoxy(62,16);printf("IMPTO:%7.2f",1234567.00);gotoxy(61,16);printf("REGALIA:%7.2f",1234567.00);gotoxy(55,17);printf("TOTAL A PAGAR:%7.2f",1234567.00);
