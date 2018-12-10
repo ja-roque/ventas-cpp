@@ -14,7 +14,7 @@ class productos P("Ruta");
 class clsVentas V("Ruta");
 
 float impto = 0.15, regalia = 3000.00 , regalia_parameter = 10000.00;
-char CAI[32];
+char CAI[17];
 float s_t = 0;
 float impto_temp = 0;
 float regalia_temp = 0;
@@ -44,9 +44,9 @@ void main()
   int x = 0, y = 0,x2 = 0, y2 = 0;
   int moves = 0, max_moves = 0,moves2 = 0, max_moves2 = 0;
   int page = 0, page2 = 0;
-
-  rand_string(CAI,32);
+  rand_string(CAI,17);
   int x_p = 0, y_p = 0;
+  int select = 0;
   ptrProducto VerP = NULL;ptrCliente VerC = NULL;ptrVentas VerV = NULL;
   do{
 
@@ -112,7 +112,40 @@ void main()
                 break;
 
                 case F1:
-                V.Insertar(total_pago, impto_temp, regalia_temp);
+                gotoxy(23,18);
+                select = 0;
+                do {
+                    tecla[3] = fxtecla();
+                    switch(tecla[3])
+                    {
+                      case FDER:
+                      if(select == 0)
+                      {
+                        gotoxy(25,18);printf(" ");
+                        gotoxy(37,18);printf("%c",254);
+                        select = 1;
+                      }
+                      break;
+
+                      case FIZQ:
+                      if(select == 1)
+                      {
+                        gotoxy(25,18);printf("%c",254);
+                        gotoxy(37,18);printf(" ");
+                        select = 0;
+                      }
+                      break;
+
+                      case ENTER:
+                        V.Insertar(VerC->nombre,total_pago, impto_temp, regalia_temp,select,CAI);
+                        tecla[2] = ESC;
+                      break;
+
+                      case ESC:
+                        tecla[3] = ENTER;
+                      break;
+                    }
+                } while(tecla[3] != ENTER);
                 break;
 
                 case FARR:
@@ -193,24 +226,69 @@ void main()
       case F2:
         system("CLS");
         page = 1;
-        x = 69;
-        y = 15;
+        x = 3;
+        y = 4;
+        moves2 = 1;
+        max_moves2 = 14;
         historico_ventas_menu();
-        V.Imprimir(x,y,page);
         VerV = V.InicioLista();
+        V.Imprimir(x,y,page);
         if(VerV != NULL)
         {
           gotoxy(x,y);textbackground(BLUE);cprintf("%d",VerV->codigo);
+          V.Imprimir_Detalle(VerV);
         }
         do {
           tecla[1] = fxtecla();
           switch(tecla[1])
           {
             case FARR:
-
+            if(VerV != NULL)
+            {
+              if(moves != 1)
+              {
+                if(VerV->ptrAnterior != NULL)
+                {
+                  gotoxy(x,y);textbackground(BLACK);cprintf("%d",VerV->codigo);
+                  VerV = VerV->ptrAnterior;
+                  V.Imprimir_Detalle(VerV);
+                  y--;moves--;
+                  gotoxy(x,y);textbackground(BLUE);cprintf("%d",VerV->codigo);
+                }
+              }
+            }
             break;
 
             case FABA:
+            if(VerV->ptrSiguiente != NULL)
+            {
+              if(moves != 14)
+              {
+                gotoxy(x,y);textbackground(BLACK);cprintf("%d",VerV->codigo);
+                VerV = VerV->ptrSiguiente;
+                V.Imprimir_Detalle(VerV);
+                y++;moves++;
+                gotoxy(x,y);textbackground(BLUE);cprintf("%d",VerV->codigo);
+              }
+            }
+            break;
+
+            case F1:
+            if(VerV != NULL)
+            {
+              if(VerV->estado == true)
+              {
+                VerV->estado = false;
+              }
+              else
+              {
+                if(VerV->estado == false)
+                {
+                  VerV->estado = true;
+                }
+              }
+              V.Imprimir_Detalle(VerV);
+            }
             break;
           }
 

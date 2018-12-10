@@ -23,10 +23,14 @@ typedef strVentas_Detalle *ptrVentas_Detalle;
 
 struct Ventas{
   int codigo;
+  char cliente[30];
+  char CAI[17];
   float monto_total;
   float impto;
   float regalia;
   ptrVentas_Detalle Lista_Detalle;
+  int forma_pago;
+  bool estado;
   struct Ventas *ptrAnterior;
   struct Ventas *ptrSiguiente;
 };
@@ -47,12 +51,12 @@ clsVentas(char ruta[100]);
 ~clsVentas();
 void Eliminar(char nombre[30]);
 bool EstaVacia();
-void Insertar(float Total,float Impto,float Regalia);
+void Insertar(char Cliente[30],float Total,float Impto,float Regalia,int FormaPago,char cai[17]);
 void Insertar_Detalle(char Nombre[30],float Precio_Unit,float Cantidad,float Total_Producto);
 ptrVentas InicioLista();
 void Guardar_En_El_Archivo();
 void Cargar_Datos();
-void Imprimir_Detalle(int x, int y, int page);
+void clsVentas::Imprimir_Detalle(ptrVentas NodoVentas);
 float Subtotal();
 void Imprimir(int x, int y, int page);
 };
@@ -77,7 +81,7 @@ clsVentas::~clsVentas()
   }
 }
 
-void clsVentas::Insertar(float Total,float Impto,float Regalia)
+void clsVentas::Insertar(char Cliente[30],float Total,float Impto,float Regalia,int FormaPago,char cai[17])
 {
 	ptrVentas ptrNuevo;
 	ptrVentas ptrAnterior;
@@ -89,10 +93,15 @@ void clsVentas::Insertar(float Total,float Impto,float Regalia)
   {
     num_codigo++;
     ptrNuevo->codigo = num_codigo;
+    strcpy(ptrNuevo->cliente,Cliente);
     ptrNuevo->monto_total = Total;
     ptrNuevo->impto = Impto;
     ptrNuevo->regalia = Regalia;
     ptrNuevo->Lista_Detalle = Inicio_Detalle;
+    ptrNuevo->forma_pago = FormaPago;
+    ptrNuevo->estado = true;
+    strcpy(ptrNuevo->CAI,cai);
+
 
 		ptrNuevo->ptrAnterior = NULL;
 		ptrNuevo->ptrSiguiente = NULL;
@@ -125,6 +134,7 @@ void clsVentas::Insertar(float Total,float Impto,float Regalia)
 				ptrActual->ptrAnterior = ptrNuevo;
 			}
 		}
+    Inicio_Detalle = NULL;
 	}
 	else
   {
@@ -243,17 +253,60 @@ void clsVentas::Imprimir(int x, int y, int page)
   }
 }
 
-void clsVentas::Imprimir_Detalle(int x, int y, int page)
+void clsVentas::Imprimir_Detalle(ptrVentas NodoVentas)
 {
-  ptrVentas_Detalle Inic_Temp = Inicio_Detalle;
+  int y = 8;
+  ptrVentas_Detalle Inic_Temp = NodoVentas->Lista_Detalle;
+  char aux[100];
   while(Inic_Temp != NULL)
   {
-    gotoxy(x,y);printf("%s",Inic_Temp->producto);
-    gotoxy(30,y);printf("%f",Inic_Temp->precio_unit);
-    gotoxy(55,y);printf("%f",Inic_Temp->total_producto);
+    sprintf(aux, "%.2f", Inic_Temp->cantidad);
+    gotoxy(22,y);printf("%7s",aux);
+    gotoxy(32,y);printf("%s",Inic_Temp->producto);
+    sprintf(aux, "%.2f", Inic_Temp->precio_unit);
+    gotoxy(57,y);printf("%11s",aux);
+    sprintf(aux, "%.2f", Inic_Temp->total_producto);
+    gotoxy(69,y);printf("%11s",aux);
     y++;
     Inic_Temp  = Inic_Temp->ptrSiguiente;
   }
+
+  gotoxy(32,5);printf("%s",NodoVentas->cliente);
+
+  sprintf(aux, "%.2f", (NodoVentas->monto_total - NodoVentas->impto - NodoVentas->regalia));
+  gotoxy(69,15);printf("%11s",aux);
+  sprintf(aux, "%.2f", NodoVentas->impto);
+  gotoxy(69,16);printf("%11s",aux);
+  sprintf(aux, "%.2f", NodoVentas->regalia);
+  gotoxy(69,17);printf("%11s",aux);
+  sprintf(aux, "%.2f", NodoVentas->monto_total);
+  gotoxy(69,18);printf("%11s",aux);
+
+  if(NodoVentas->forma_pago == 1)
+  {
+    gotoxy(25,18);printf(" ");
+    gotoxy(37,18);printf("%c",254);
+  }
+  else
+  {
+    gotoxy(25,18);printf("%c",254);
+    gotoxy(37,18);printf(" ");
+  }
+
+  if(NodoVentas->estado == true)
+  {
+    gotoxy(24,19);printf("ESTADO: AUTORIZADA [%c] ANULADA[ ]",254);
+  }
+  else
+  {
+    gotoxy(24,19);printf("ESTADO: AUTORIZADA [ ] ANULADA[%c]",254);
+  }
+
+  gotoxy(59,2);printf("FACTURA:%13d",NodoVentas->codigo);
+  gotoxy(59,3);printf("CAI:%17s",NodoVentas->CAI);
+
+
+
 }
 
 float clsVentas::Subtotal()

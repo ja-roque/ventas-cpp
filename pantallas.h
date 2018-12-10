@@ -5,6 +5,10 @@
           #include <conio.h>
      #endif
 
+     #if !defined(__TIME_H)
+          #include <time.h>
+     #endif
+
      #if !defined(__FIGURAS_H)
           #include "C:\projects\ventas-cpp\includes\figuras.h"
      #endif
@@ -21,6 +25,9 @@
      void inventario_ventas_menu();
      void correlativos_ventas_menu();
      static char *rand_string(char *str, size_t size);
+
+     time_t t = time(NULL);
+     struct tm tm = *localtime(&t);
 
 
      void main_menu()
@@ -44,7 +51,7 @@
      void ventas_menu_c()
      {
        gotoxy(7,2);printf("CLIENTES");gotoxy(35,2);printf("MODULO DE VENTAS");gotoxy(33,4);printf("--------------------");
-       gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:DD/MM/YYYY");
+       gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:%d/%d/%d",tm.tm_mday,tm.tm_mon+1,tm.tm_year + 1900);
        fxrectangulo(2,3,20,18);
        gotoxy(7,19);printf("PAG 1/%d");
        fxrectangulo(2,20,78,24);
@@ -56,7 +63,7 @@
      void ventas_menu_v()
      {
        gotoxy(6,2);printf("INVENTARIO");gotoxy(35,2);printf("MODULO DE VENTAS");gotoxy(33,4);printf("--------------------");gotoxy(59,2);printf("FACTURA:%13d",0);
-       gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:DD/MM/YYYY");
+       gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:%d/%d/%d",tm.tm_mday,tm.tm_mon+1,tm.tm_year + 1900);
        gotoxy(23,5);printf("CLIENTE: ");
        gotoxy(24,7);printf("CANT.");gotoxy(32,7);printf("DESCRIPCION");gotoxy(57,7);printf("PRECIO UNIT");gotoxy(73,7);printf("TOTAL");
        //gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234567.00);gotoxy(69,8);printf("%7.2f",1234567.00);
@@ -77,13 +84,15 @@
      void historico_ventas_menu()
      {
          gotoxy(2,2);printf("HISTORICO DE VENTAS");gotoxy(35,2);printf("MODULO DE VENTAS");gotoxy(33,4);printf("--------------------");gotoxy(59,2);printf("FACTURA:%13d",0);
-         gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:DD/MM/YYYY");
-         gotoxy(23,5);printf("CLIENTE: %-26s","ABC");
+         gotoxy(59,2);printf("FACTURA:%13d",0);gotoxy(59,3);printf("CAI:%17d",0);gotoxy(64,4);printf("FECHA:%d/%d/%d",tm.tm_mday,tm.tm_mon+1,tm.tm_year + 1900);
+         gotoxy(23,5);printf("CLIENTE:");
          gotoxy(24,7);printf("CANT.");gotoxy(32,7);printf("DESCRIPCION");gotoxy(57,7);printf("PRECIO UNIT");gotoxy(73,7);printf("TOTAL");
-         gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234567.00);gotoxy(69,8);printf("%7.2f",1234567.00);
-         gotoxy(60,15);printf("SUBTOTAL:%7.2f",1234567.00);gotoxy(62,16);printf("IMPTO:%7.2f",1234567.00);gotoxy(61,16);printf("REGALIA:%7.2f",1234567.00);gotoxy(55,17);printf("TOTAL A PAGAR:%7.2f",1234567.00);
+         //gotoxy(24,8);printf("%4.2f",1.00);gotoxy(32,8);printf("%-24s","PRD");gotoxy(57,8);printf("%7.2f",1234567.00);gotoxy(69,8);printf("%7.2f",1234567.00);
+         //gotoxy(60,15);printf("SUBTOTAL:%7.2f",1234567.00);gotoxy(62,16);printf("IMPTO:%7.2f",1234567.00);gotoxy(61,16);printf("REGALIA:%7.2f",1234567.00);gotoxy(55,17);printf("TOTAL A PAGAR:%7.2f",1234567.00);
+         gotoxy(60,15);printf("SUBTOTAL:");gotoxy(62,16);printf("IMPTO:");gotoxy(61,17);printf("REGALIA:");gotoxy(55,18);printf("TOTAL A PAGAR:");
          gotoxy(24,17);printf("FORMA DE PAGO:");
          gotoxy(24,18);printf("[%c] CREDITO [ ] CONTADO",254);
+         gotoxy(24,19);printf("ESTADO: AUTORIZADA [ ] ANULADA[ ]");
          fxrectangulo(2,3,20,18);
          gotoxy(7,19);printf("PAG 1/%d");
          gotoxy(40,16);printf("PAG 1/%d");
