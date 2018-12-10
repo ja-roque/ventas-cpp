@@ -26,7 +26,7 @@ struct Ventas{
   float monto_total;
   float impto;
   float regalia;
-  struct ptrVentas_Detalles *Lista_Detalle;
+  ptrVentas_Detalle Lista_Detalle;
   struct Ventas *ptrAnterior;
   struct Ventas *ptrSiguiente;
 };
@@ -41,20 +41,26 @@ private:
   ptrVentas ptrInicio;
   char *ruta_file;
   int num_codigo;
+  ptrVentas_Detalle Inicio_Detalle;
 public:
 clsVentas(char ruta[100]);
 ~clsVentas();
 void Eliminar(char nombre[30]);
 bool EstaVacia();
-void Insertar(char nombre[30],int genero, int fecha_nac[3], char direccion[45], char email[45], char telefono[11], char celular[11]);
+void Insertar(float Total,float Impto,float Regalia);
+void Insertar_Detalle(char Nombre[30],float Precio_Unit,float Cantidad,float Total_Producto);
 ptrVentas InicioLista();
 void Guardar_En_El_Archivo();
 void Cargar_Datos();
+void Imprimir_Detalle(int x, int y, int page);
+float Subtotal();
+void Imprimir(int x, int y, int page);
 };
 
 clsVentas::clsVentas(char *ruta)
 {
   ptrInicio = NULL;
+  Inicio_Detalle = NULL;
   num_codigo = 0;
   ruta_file = (char*)malloc((sizeof(char)*strlen(ruta)));
   strcpy(ruta_file,ruta);
@@ -71,7 +77,7 @@ clsVentas::~clsVentas()
   }
 }
 
-/*void clsVentas::Insertar(char nombre[30],int genero, int fecha_nac[3], char direccion[45], char email[45], char telefono[11], char celular[11])
+void clsVentas::Insertar(float Total,float Impto,float Regalia)
 {
 	ptrVentas ptrNuevo;
 	ptrVentas ptrAnterior;
@@ -83,22 +89,17 @@ clsVentas::~clsVentas()
   {
     num_codigo++;
     ptrNuevo->codigo = num_codigo;
-		strcpy(ptrNuevo->nombre,nombre);
-    ptrNuevo->genero = genero;
-    for(int i=0;i<3;i++)
-    {
-      ptrNuevo->fecha_nac[i] = fecha_nac[i];
-    }
-    strcpy(ptrNuevo->direccion,direccion);
-    strcpy(ptrNuevo->email,email);
-    strcpy(ptrNuevo->telefono,telefono);
-    strcpy(ptrNuevo->celular,celular);
+    ptrNuevo->monto_total = Total;
+    ptrNuevo->impto = Impto;
+    ptrNuevo->regalia = Regalia;
+    ptrNuevo->Lista_Detalle = Inicio_Detalle;
+
 		ptrNuevo->ptrAnterior = NULL;
 		ptrNuevo->ptrSiguiente = NULL;
 		ptrAnterior = NULL;
 		ptrActual = ptrInicio;
 
-		while(ptrActual != NULL && strcmp(ptrActual->nombre,nombre) < 1)
+		while(ptrActual != NULL)
     {
 			ptrAnterior = ptrActual;
 			ptrActual = ptrActual->ptrSiguiente;
@@ -129,7 +130,61 @@ clsVentas::~clsVentas()
   {
 		printf("MEMORIA INSUFICIENTE PARA INSERTAR EL NUEVO DATO");
 	}
-}*/
+}
+
+void clsVentas::Insertar_Detalle(char Nombre[30],float Precio_Unit,float Cantidad,float Total_Producto)
+{
+  ptrVentas_Detalle ptrNuevo;
+	ptrVentas_Detalle ptrAnterior;
+	ptrVentas_Detalle ptrActual;
+
+	ptrNuevo = (ptrVentas_Detalle) malloc(sizeof(strVentas_Detalle));
+
+	if(ptrNuevo != NULL)
+  {
+    strcpy(ptrNuevo->producto,Nombre);
+    ptrNuevo->precio_unit = Precio_Unit;
+    ptrNuevo->cantidad = Cantidad;
+    ptrNuevo->total_producto = Total_Producto;
+
+		ptrNuevo->ptrAnterior = NULL;
+		ptrNuevo->ptrSiguiente = NULL;
+		ptrAnterior = NULL;
+		ptrActual = Inicio_Detalle;
+
+		while(ptrActual != NULL)
+    {
+			ptrAnterior = ptrActual;
+			ptrActual = ptrActual->ptrSiguiente;
+		}
+
+		if(ptrAnterior == NULL)
+    {
+			ptrNuevo->ptrSiguiente = Inicio_Detalle;
+
+			if(Inicio_Detalle != NULL)
+      {
+				(Inicio_Detalle)->ptrAnterior = ptrNuevo;
+			}
+			Inicio_Detalle = ptrNuevo;
+		}
+		else
+    {
+			ptrAnterior->ptrSiguiente = ptrNuevo;
+			ptrNuevo->ptrAnterior = ptrAnterior;
+			ptrNuevo->ptrSiguiente = ptrActual;
+			if(ptrActual != NULL)
+      {
+				ptrActual->ptrAnterior = ptrNuevo;
+			}
+		}
+	}
+	else
+  {
+		printf("MEMORIA INSUFICIENTE PARA INSERTAR EL NUEVO DATO");
+	}
+}
+
 
 
 bool clsVentas::EstaVacia()
@@ -175,5 +230,41 @@ void clsVentas::Cargar_Datos()
       }
     fclose(ptrArchivo);
   }
+}
+
+void clsVentas::Imprimir(int x, int y, int page)
+{
+  ptrVentas Inic_Temp = ptrInicio;
+  while(Inic_Temp != NULL)
+  {
+    gotoxy(x,y);printf("%d",Inic_Temp->codigo);
+    y++;
+    Inic_Temp  = Inic_Temp->ptrSiguiente;
+  }
+}
+
+void clsVentas::Imprimir_Detalle(int x, int y, int page)
+{
+  ptrVentas_Detalle Inic_Temp = Inicio_Detalle;
+  while(Inic_Temp != NULL)
+  {
+    gotoxy(x,y);printf("%s",Inic_Temp->producto);
+    gotoxy(30,y);printf("%f",Inic_Temp->precio_unit);
+    gotoxy(55,y);printf("%f",Inic_Temp->total_producto);
+    y++;
+    Inic_Temp  = Inic_Temp->ptrSiguiente;
+  }
+}
+
+float clsVentas::Subtotal()
+{
+  ptrVentas_Detalle Inic_Temp = Inicio_Detalle;
+  float subtotal = 0;
+  while(Inic_Temp != NULL)
+  {
+    subtotal = Inic_Temp->total_producto;
+    Inic_Temp  = Inic_Temp->ptrSiguiente;
+  }
+  return subtotal;
 }
 #endif

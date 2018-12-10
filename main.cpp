@@ -7,10 +7,18 @@
 #include "C:\projects\ventas-cpp\includes\productos.h"
 #include "C:\projects\ventas-cpp\includes\ventas.h"
 
-void Leer_Info_Inv(ptrProducto ABC);
+void Calculos();
 
 class clientes C("Ruta");
 class productos P("Ruta");
+class clsVentas V("Ruta");
+
+float impto = 0.15, regalia = 3000.00 , regalia_parameter = 10000.00;
+char CAI[32];
+float s_t = 0;
+float impto_temp = 0;
+float regalia_temp = 0;
+float total_pago = 0;
 
 void Create_Info()
 {
@@ -36,6 +44,9 @@ void main()
   int x = 0, y = 0,x2 = 0, y2 = 0;
   int moves = 0, max_moves = 0,moves2 = 0, max_moves2 = 0;
   int page = 0, page2 = 0;
+
+  rand_string(CAI,32);
+  int x_p = 0, y_p = 0;
   ptrProducto VerP = NULL;ptrCliente VerC = NULL;ptrVentas VerV = NULL;
   do{
 
@@ -55,6 +66,7 @@ void main()
         moves = 1;
         max_moves = 14;
         do{
+          //Do que agrega clientes
           ventas_menu_c();
           tecla[1] = fxtecla();
           switch(tecla[1])
@@ -73,11 +85,34 @@ void main()
               gotoxy(x2,y2);textbackground(BLUE);cprintf("%s",VerP->nombre);
             }
             gotoxy(32,5);printf("%s",VerC->nombre);
+            x_p = 24;y_p = 8;
             do{
+              //Do que agrega Productos
               tecla[2] = fxtecla();
               switch(tecla[2])
               {
                 case ENTER:
+                  if(VerP != NULL)
+                  {
+                    float cantidad_temp = 0;
+                    char aux[100];
+                    gotoxy(x_p,y_p);scanf("%f",&cantidad_temp);
+                    sprintf(aux, "%.2f", cantidad_temp);
+                    gotoxy(x_p,y_p);printf("%7s",aux);
+                    sprintf(aux, "%.2f", VerP->precio);
+                    gotoxy(32,y_p);printf("%-24s",VerP->nombre);gotoxy(57,y_p);printf("%11s",aux);
+                    sprintf(aux, "%.2f", (cantidad_temp * VerP->precio));
+                    gotoxy(69,y_p);printf("%11s",aux);
+                    V.Insertar_Detalle(VerP->nombre,VerP->precio,cantidad_temp,(cantidad_temp * VerP->precio));
+                    Calculos();
+                    V.Subtotal();
+                    y_p++;
+                    gotoxy(x2,y2);
+                  }
+                break;
+
+                case F1:
+                V.Insertar(total_pago, impto_temp, regalia_temp);
                 break;
 
                 case FARR:
@@ -109,8 +144,11 @@ void main()
                 }
                 break;
 
+
+
               }
             }while(tecla[2] != ESC);
+            //Do que agrega Productos
             system("CLS");
             ventas_menu_c();
             C.Imprimir(3,4,page);
@@ -147,19 +185,33 @@ void main()
             break;
 
           }
-
+        //Do que agrega clientes
         }while(tecla[1] != ESC);
 
       break;
 
       case F2:
         system("CLS");
+        page = 1;
+        x = 69;
+        y = 15;
         historico_ventas_menu();
+        V.Imprimir(x,y,page);
+        VerV = V.InicioLista();
+        if(VerV != NULL)
+        {
+          gotoxy(x,y);textbackground(BLUE);cprintf("%d",VerV->codigo);
+        }
         do {
           tecla[1] = fxtecla();
           switch(tecla[1])
           {
+            case FARR:
 
+            break;
+
+            case FABA:
+            break;
           }
 
         }while(tecla[1] != ESC);
@@ -167,6 +219,20 @@ void main()
       break;
 
       case F3:
+      system("CLS");
+      correlativos_ventas_menu();
+      do{
+        tecla[1] = fxtecla();
+        switch(tecla[1])
+        {
+          case FARR:
+          break;
+
+          case FABA:
+          break;
+        }
+
+      }while(tecla[1] != ESC);
       break;
 
       case F4:
@@ -237,12 +303,19 @@ void main()
   gotoxy(89,5);getch();
 }
 
-/*void Leer_Info_Inv(ptrProducto Info)
+void Calculos()
 {
-  gotoxy(37,5);printf("%s"Info->modelo);
-  gotoxy(37,7);printf("%s"Info->descripcion);
-  gotoxy(37,9);printf("%d"Info->existencia);
-  gotoxy(37,9);printf("%f"Info->precio_venta);
-}*/
-
-//void fxrectangulo(int x1, int y1, int x2, int y2)
+  char aux[100];
+  s_t = V.Subtotal();
+  impto_temp = s_t * impto;
+  regalia_temp = (s_t+impto_temp) >= regalia_parameter ? regalia:0;
+  total_pago = (s_t+impto_temp-regalia_temp);
+  sprintf(aux, "%.2f", s_t);
+  gotoxy(69,15);printf("%11s",aux);
+  sprintf(aux, "%.2f", impto_temp);
+  gotoxy(69,16);printf("%11s",aux);
+  sprintf(aux, "%.2f", regalia_temp);
+  gotoxy(69,17);printf("%11s",aux);
+  sprintf(aux, "%.2f", total_pago);
+  gotoxy(69,18);printf("%11s",aux);
+}
