@@ -86,7 +86,6 @@ void clsVentas::Insertar(char Cliente[30],float Total,float Impto,float Regalia,
 	ptrVentas ptrNuevo;
 	ptrVentas ptrAnterior;
 	ptrVentas ptrActual;
-
 	ptrNuevo = (ptrVentas) malloc(sizeof(strVentas));
 
 	if(ptrNuevo != NULL)
@@ -213,11 +212,11 @@ void clsVentas::Guardar_En_El_Archivo()
 	ptrVentas ptrActual = ptrInicio;
 	if(!EstaVacia())
   {
-		if((ptrArchivo = fopen(ruta_file, "ab+")) != NULL)
+		if((ptrArchivo = fopen(ruta_file, "wb+")) != NULL)
     {
 			while(ptrActual != NULL)
       {
-				fwrite(ptrActual, sizeof(strVentas), 1, ptrArchivo);
+        fwrite(ptrActual, sizeof(strVentas), 1, ptrArchivo);
 				ptrActual = ptrActual->ptrSiguiente;
 			}
 			fclose(ptrArchivo);
@@ -229,12 +228,36 @@ void clsVentas::Cargar_Datos()
 {
   FILE *ptrArchivo;
   strVentas Datos;
+  ptrVentas_Detalle ptrV;
 
   if( (ptrArchivo = fopen(ruta_file, "rb+")) != NULL )
   {
     fread(&Datos, sizeof(strVentas), 1, ptrArchivo);
       while(!feof(ptrArchivo))
       {
+        Insertar(Datos.cliente,Datos.monto_total,Datos.impto,Datos.regalia,Datos.forma_pago,Datos.CAI);
+        ptrV = Datos.Lista_Detalle;
+        fread(&Datos, sizeof(strVentas), 1, ptrArchivo);
+      }
+    fclose(ptrArchivo);
+  }
+
+  if( (ptrArchivo = fopen(ruta_file, "rb+")) != NULL )
+  {
+    fread(&Datos, sizeof(strVentas), 1, ptrArchivo);
+      while(!feof(ptrArchivo))
+      {
+        /*int codigo;
+        char cliente[30];
+        char CAI[17];
+        float monto_total;
+        float impto;
+        float regalia;
+        ptrVentas_Detalle Lista_Detalle;
+        int forma_pago;
+        bool estado;
+        Insertar_Detalle(char Nombre[30],float Precio_Unit,float Cantidad,float Total_Producto)
+        Insertar_Detalle(Datos.cliente,Datos.Precio_Unit,float Cantidad,float Total_Producto)*/
         //Insertar(Datos.nombre,Datos.genero,Datos.fecha_nac,Datos.direccion,Datos.email,Datos.telefono,Datos.celular);
         fread(&Datos, sizeof(strVentas), 1, ptrArchivo);
       }
