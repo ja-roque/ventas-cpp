@@ -47,8 +47,8 @@ clientes::~clientes()
   while(ptrInicio != NULL)
   {
     temp = ptrInicio;
-    free(temp);
     ptrInicio = ptrInicio->ptrSiguiente;
+    free(temp);
   }
 }
 

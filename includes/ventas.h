@@ -61,6 +61,7 @@ void Imprimir(int x, int y, int page);
 void clsVentas::Detalle_VP();
 bool Verificar(char producto[30],float cant);
 void Eliminar(char nombre[30]);
+void ReiniciarVenta();
 };
 
 clsVentas::clsVentas(char *ruta)
@@ -78,8 +79,8 @@ clsVentas::~clsVentas()
   while(ptrInicio != NULL)
   {
     temp = ptrInicio;
-    free(temp);
     ptrInicio = ptrInicio->ptrSiguiente;
+    free(temp);
   }
 }
 
@@ -135,7 +136,7 @@ void clsVentas::Insertar(char Cliente[30],float Total,float Impto,float Regalia,
 				ptrActual->ptrAnterior = ptrNuevo;
 			}
 		}
-    Inicio_Detalle = NULL;
+    ReiniciarVenta();
 	}
 	else
   {
@@ -416,4 +417,16 @@ void clsVentas::Eliminar(char nombre[30])
     }
   }
 }
+
+void clsVentas::ReiniciarVenta()
+{
+  ptrVentas_Detalle tmp = NULL;
+  while(Inicio_Detalle != NULL)
+  {
+    tmp = Inicio_Detalle;
+    Inicio_Detalle = Inicio_Detalle->ptrSiguiente;
+    free(tmp);
+  }
+}
+
 #endif

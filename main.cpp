@@ -105,7 +105,7 @@ void main()
                     gotoxy(32,y_p);printf("%-24s",VerP->nombre);gotoxy(57,y_p);printf("%11s",aux);
                     sprintf(aux, "%.2f", (cantidad_temp * VerP->precio));
                     gotoxy(69,y_p);printf("%11s",aux);*/
-                    if(cantidad_temp <= VerP->existencia)
+                    if(cantidad_temp <= VerP->existencia && cantidad_temp > 0)
                     {
                       bool aver = V.Verificar(VerP->nombre,cantidad_temp);
                       if(aver == false)
@@ -115,9 +115,18 @@ void main()
                       }
                       VerP->existencia -= cantidad_temp;
                       V.Detalle_VP();
+                      Calculos();
+                      gotoxy(x2,y2);
                     }
-                    Calculos();
-                    gotoxy(x2,y2);
+                    else
+                    {
+                      if(cantidad_temp > VerP->existencia)
+                      {
+                        gotoxy(x_p,y_p);printf("Inventario Insuficiente. Existencias Disponibles %.2f",VerP->existencia);
+                        getch();
+                        gotoxy(x_p,y_p);printf("%80s"," ");gotoxy(x2,y2);
+                      }
+                    }
                   }
                 break;
 
@@ -131,6 +140,10 @@ void main()
                   y_p--;
                   gotoxy(x2,y2);
                 }
+                break;
+
+                case ESC:
+                V.ReiniciarVenta();
                 break;
 
                 case F1:
@@ -164,6 +177,7 @@ void main()
                       break;
 
                       case ESC:
+                        V.ReiniciarVenta();
                         tecla[3] = ENTER;
                       break;
                     }

@@ -45,12 +45,12 @@ productos::productos(char *ruta)
 
 productos::~productos()
 {
-  ptrProducto temp = ptrInicio;
+  ptrProducto temp = NULL;
   while(ptrInicio != NULL)
   {
     temp = ptrInicio;
-    free(temp);
     ptrInicio = ptrInicio->ptrSiguiente;
+    free(temp);
   }
 }
 
@@ -82,7 +82,7 @@ void productos::Insertar(char nombre[30],float precio, float existencia)
 		ptrAnterior = NULL;
 		ptrActual = ptrInicio;
 
-		while(ptrActual != NULL && strcmp(ptrActual->nombre,nombre) < 1)
+		while(ptrActual != NULL)
     {
 			ptrAnterior = ptrActual;
 			ptrActual = ptrActual->ptrSiguiente;
