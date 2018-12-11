@@ -120,16 +120,17 @@
 #define CTRL 17
 #define SHIFT 16
 #define DEL 46
+#define SUPR 1083
 
 int fxtecla() {
 	int t;
-	
+
 	t = getch();
-	
+
 	if(t == 0)
 		t = 1000 + getch();
-	
+
 	return t;
 }
- 
+
 #endif //teclado

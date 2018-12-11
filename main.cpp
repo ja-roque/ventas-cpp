@@ -55,7 +55,6 @@ void main()
     system("CLS");
     main_menu();
     tecla[0] = fxtecla();
-
     switch(tecla[0])
     {
       case F1:
@@ -99,18 +98,39 @@ void main()
                     float cantidad_temp = 0;
                     char aux[100];
                     gotoxy(x_p,y_p);scanf("%f",&cantidad_temp);
-                    sprintf(aux, "%.2f", cantidad_temp);
+                    gotoxy(x_p,y_p);printf("%50s"," ");
+                    /*sprintf(aux, "%.2f", cantidad_temp);
                     gotoxy(x_p,y_p);printf("%7s",aux);
                     sprintf(aux, "%.2f", VerP->precio);
                     gotoxy(32,y_p);printf("%-24s",VerP->nombre);gotoxy(57,y_p);printf("%11s",aux);
                     sprintf(aux, "%.2f", (cantidad_temp * VerP->precio));
-                    gotoxy(69,y_p);printf("%11s",aux);
-                    V.Insertar_Detalle(VerP->nombre,VerP->precio,cantidad_temp,(cantidad_temp * VerP->precio));
+                    gotoxy(69,y_p);printf("%11s",aux);*/
+                    if(cantidad_temp <= VerP->existencia)
+                    {
+                      bool aver = V.Verificar(VerP->nombre,cantidad_temp);
+                      if(aver == false)
+                      {
+                        V.Insertar_Detalle(VerP->nombre,VerP->precio,cantidad_temp,(cantidad_temp * VerP->precio));
+                        y_p++;
+                      }
+                      VerP->existencia -= cantidad_temp;
+                      V.Detalle_VP();
+                    }
                     Calculos();
-                    V.Subtotal();
-                    y_p++;
                     gotoxy(x2,y2);
                   }
+                break;
+
+                case SUPR:
+                if(VerP != NULL)
+                {
+                  V.Eliminar(VerP->nombre);
+                  fxLimpiaArea(24,8,80,14);
+                  V.Detalle_VP();
+                  Calculos();
+                  y_p--;
+                  gotoxy(x2,y2);
+                }
                 break;
 
                 case F1:

@@ -49,7 +49,6 @@ private:
 public:
 clsVentas(char ruta[100]);
 ~clsVentas();
-void Eliminar(char nombre[30]);
 bool EstaVacia();
 void Insertar(char Cliente[30],float Total,float Impto,float Regalia,int FormaPago,char cai[17]);
 void Insertar_Detalle(char Nombre[30],float Precio_Unit,float Cantidad,float Total_Producto);
@@ -59,6 +58,9 @@ void Cargar_Datos();
 void clsVentas::Imprimir_Detalle(ptrVentas NodoVentas);
 float Subtotal();
 void Imprimir(int x, int y, int page);
+void clsVentas::Detalle_VP();
+bool Verificar(char producto[30],float cant);
+void Eliminar(char nombre[30]);
 };
 
 clsVentas::clsVentas(char *ruta)
@@ -327,9 +329,6 @@ void clsVentas::Imprimir_Detalle(ptrVentas NodoVentas)
 
   gotoxy(59,2);printf("FACTURA:%13d",NodoVentas->codigo);
   gotoxy(59,3);printf("CAI:%17s",NodoVentas->CAI);
-
-
-
 }
 
 float clsVentas::Subtotal()
@@ -338,9 +337,83 @@ float clsVentas::Subtotal()
   float subtotal = 0;
   while(Inic_Temp != NULL)
   {
-    subtotal = Inic_Temp->total_producto;
+    subtotal += Inic_Temp->total_producto;
     Inic_Temp  = Inic_Temp->ptrSiguiente;
   }
   return subtotal;
+}
+
+void clsVentas::Detalle_VP()
+{
+  int y = 8;
+  ptrVentas_Detalle Inic_Temp = Inicio_Detalle;
+  char aux[100];
+  while(Inic_Temp != NULL)
+  {
+    sprintf(aux, "%.2f", Inic_Temp->cantidad);
+    gotoxy(22,y);printf("%7s",aux);
+    gotoxy(32,y);printf("%s",Inic_Temp->producto);
+    sprintf(aux, "%.2f", Inic_Temp->precio_unit);
+    gotoxy(57,y);printf("%11s",aux);
+    sprintf(aux, "%.2f", Inic_Temp->total_producto);
+    gotoxy(69,y);printf("%11s",aux);
+    y++;
+    Inic_Temp  = Inic_Temp->ptrSiguiente;
+  }
+}
+
+bool clsVentas::Verificar(char producto[30],float cant)
+{
+  ptrVentas_Detalle Inic_Temp = Inicio_Detalle;
+  bool existe = false;
+  while(Inic_Temp != NULL)
+  {
+    if(strcmp(producto,Inic_Temp->producto) == 0)
+    {
+      existe = true;
+      Inic_Temp->cantidad += cant;
+      Inic_Temp->total_producto = Inic_Temp->cantidad * Inic_Temp->precio_unit;
+    }
+    Inic_Temp = Inic_Temp->ptrSiguiente;
+  }
+  return existe;
+}
+
+void clsVentas::Eliminar(char nombre[30])
+{
+  ptrVentas_Detalle ptrTemp;
+  ptrVentas_Detalle ptrAnterior;
+  ptrVentas_Detalle ptrActual;
+
+  if((strcmp(Inicio_Detalle->producto,nombre) == 0)){
+    ptrTemp = Inicio_Detalle;
+    if((Inicio_Detalle)->ptrSiguiente)
+    {
+      Inicio_Detalle = (Inicio_Detalle)->ptrSiguiente;
+      ((Inicio_Detalle)->ptrAnterior) = NULL;
+    }
+    else
+    {
+      Inicio_Detalle = NULL;
+    }
+    free(ptrTemp);
+  }
+  else{
+    ptrAnterior = Inicio_Detalle;
+    ptrActual = (Inicio_Detalle)->ptrSiguiente;;
+
+    while(ptrActual != NULL && strcmp(ptrActual->producto,nombre) != 0){
+      ptrAnterior = ptrActual;
+      ptrActual = ptrActual->ptrSiguiente;
+    }
+    if(ptrActual != NULL){
+      ptrTemp = ptrActual;
+      ptrAnterior->ptrSiguiente = ptrActual->ptrSiguiente;
+      if(ptrActual->ptrSiguiente != NULL){
+        (ptrActual->ptrSiguiente)->ptrAnterior = ptrAnterior;
+      }
+      free(ptrTemp);
+    }
+  }
 }
 #endif

@@ -13,7 +13,7 @@ struct Producto{
   int codigo;
   char nombre[30];
   float precio;
-  int existencia;
+  float existencia;
   struct Producto *ptrAnterior;
   struct Producto *ptrSiguiente;
 };
