@@ -62,6 +62,7 @@ void clsVentas::Detalle_VP();
 bool Verificar(char producto[30],float cant);
 void Eliminar(char nombre[30]);
 void ReiniciarVenta();
+int factura();
 };
 
 clsVentas::clsVentas(char *ruta)
@@ -297,39 +298,42 @@ void clsVentas::Imprimir_Detalle(ptrVentas NodoVentas)
     Inic_Temp  = Inic_Temp->ptrSiguiente;
   }
 
-  gotoxy(32,5);printf("%s",NodoVentas->cliente);
-
-  sprintf(aux, "%.2f", (NodoVentas->monto_total - NodoVentas->impto - NodoVentas->regalia));
-  gotoxy(69,15);printf("%11s",aux);
-  sprintf(aux, "%.2f", NodoVentas->impto);
-  gotoxy(69,16);printf("%11s",aux);
-  sprintf(aux, "%.2f", NodoVentas->regalia);
-  gotoxy(69,17);printf("%11s",aux);
-  sprintf(aux, "%.2f", NodoVentas->monto_total);
-  gotoxy(69,18);printf("%11s",aux);
-
-  if(NodoVentas->forma_pago == 1)
+  if(NodoVentas != NULL)
   {
-    gotoxy(25,18);printf(" ");
-    gotoxy(37,18);printf("%c",254);
-  }
-  else
-  {
-    gotoxy(25,18);printf("%c",254);
-    gotoxy(37,18);printf(" ");
-  }
+    gotoxy(32,5);printf("%s",NodoVentas->cliente);
 
-  if(NodoVentas->estado == true)
-  {
-    gotoxy(24,19);printf("ESTADO: AUTORIZADA [%c] ANULADA[ ]",254);
-  }
-  else
-  {
-    gotoxy(24,19);printf("ESTADO: AUTORIZADA [ ] ANULADA[%c]",254);
-  }
+    sprintf(aux, "%.2f", (NodoVentas->monto_total - NodoVentas->impto - NodoVentas->regalia));
+    gotoxy(69,15);printf("%11s",aux);
+    sprintf(aux, "%.2f", NodoVentas->impto);
+    gotoxy(69,16);printf("%11s",aux);
+    sprintf(aux, "%.2f", NodoVentas->regalia);
+    gotoxy(69,17);printf("%11s",aux);
+    sprintf(aux, "%.2f", NodoVentas->monto_total);
+    gotoxy(69,18);printf("%11s",aux);
 
-  gotoxy(59,2);printf("FACTURA:%13d",NodoVentas->codigo);
-  gotoxy(59,3);printf("CAI:%17s",NodoVentas->CAI);
+    if(NodoVentas->forma_pago == 1)
+    {
+      gotoxy(25,18);printf(" ");
+      gotoxy(37,18);printf("%c",254);
+    }
+    else
+    {
+      gotoxy(25,18);printf("%c",254);
+      gotoxy(37,18);printf(" ");
+    }
+
+    if(NodoVentas->estado == true)
+    {
+      gotoxy(24,19);printf("ESTADO: AUTORIZADA [%c] ANULADA[ ]",254);
+    }
+    else
+    {
+      gotoxy(24,19);printf("ESTADO: AUTORIZADA [ ] ANULADA[%c]",254);
+    }
+
+    gotoxy(59,2);printf("FACTURA:%13d",NodoVentas->codigo);
+    gotoxy(59,3);printf("CAI:%17s",NodoVentas->CAI);
+  }
 }
 
 float clsVentas::Subtotal()
@@ -420,13 +424,19 @@ void clsVentas::Eliminar(char nombre[30])
 
 void clsVentas::ReiniciarVenta()
 {
-  ptrVentas_Detalle tmp = NULL;
+  /*ptrVentas_Detalle tmp = NULL;
   while(Inicio_Detalle != NULL)
   {
     tmp = Inicio_Detalle;
     Inicio_Detalle = Inicio_Detalle->ptrSiguiente;
     free(tmp);
-  }
+  }*/
+  Inicio_Detalle = NULL;
+}
+
+int clsVentas::factura()
+{
+  return num_codigo+1;
 }
 
 #endif

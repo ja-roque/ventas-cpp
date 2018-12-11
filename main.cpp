@@ -67,8 +67,9 @@ void main()
         moves = 1;
         max_moves = 14;
         do{
-          //Do que agrega clientes
           ventas_menu_c();
+          gotoxy(59,2);printf("FACTURA:%13d",V.factura());gotoxy(59,3);printf("CAI:%17s",CAI);
+          //Do que agrega clientes
           tecla[1] = fxtecla();
           switch(tecla[1])
           {
@@ -81,6 +82,7 @@ void main()
             ventas_menu_v();
             P.Imprimir(x2,y2,page2);
             VerP = P.InicioLista();
+            gotoxy(59,2);printf("FACTURA:%13d",V.factura());gotoxy(59,3);printf("CAI:%17s",CAI);
             if(VerP != NULL)
             {
               gotoxy(x2,y2);textbackground(BLUE);cprintf("%s",VerP->nombre);
@@ -99,12 +101,6 @@ void main()
                     char aux[100];
                     gotoxy(x_p,y_p);scanf("%f",&cantidad_temp);
                     gotoxy(x_p,y_p);printf("%50s"," ");
-                    /*sprintf(aux, "%.2f", cantidad_temp);
-                    gotoxy(x_p,y_p);printf("%7s",aux);
-                    sprintf(aux, "%.2f", VerP->precio);
-                    gotoxy(32,y_p);printf("%-24s",VerP->nombre);gotoxy(57,y_p);printf("%11s",aux);
-                    sprintf(aux, "%.2f", (cantidad_temp * VerP->precio));
-                    gotoxy(69,y_p);printf("%11s",aux);*/
                     if(cantidad_temp <= VerP->existencia && cantidad_temp > 0)
                     {
                       bool aver = V.Verificar(VerP->nombre,cantidad_temp);
@@ -134,7 +130,7 @@ void main()
                 if(VerP != NULL)
                 {
                   V.Eliminar(VerP->nombre);
-                  fxLimpiaArea(24,8,80,14);
+                  fxLimpiaArea(22,8,80,14);
                   V.Detalle_VP();
                   Calculos();
                   y_p--;
@@ -174,6 +170,7 @@ void main()
                       case ENTER:
                         V.Insertar(VerC->nombre,total_pago, impto_temp, regalia_temp,select,CAI);
                         tecla[2] = ESC;
+                        rand_string(CAI,17);
                       break;
 
                       case ESC:
@@ -271,6 +268,7 @@ void main()
         V.Imprimir(x,y,page);
         if(VerV != NULL)
         {
+          fxLimpiaArea(24,8,80,14);
           gotoxy(x,y);textbackground(BLUE);cprintf("%d",VerV->codigo);
           V.Imprimir_Detalle(VerV);
         }
@@ -285,6 +283,7 @@ void main()
               {
                 if(VerV->ptrAnterior != NULL)
                 {
+                  fxLimpiaArea(22,8,80,14);
                   gotoxy(x,y);textbackground(BLACK);cprintf("%d",VerV->codigo);
                   VerV = VerV->ptrAnterior;
                   V.Imprimir_Detalle(VerV);
@@ -300,6 +299,7 @@ void main()
             {
               if(moves != 14)
               {
+                fxLimpiaArea(22,8,80,14);
                 gotoxy(x,y);textbackground(BLACK);cprintf("%d",VerV->codigo);
                 VerV = VerV->ptrSiguiente;
                 V.Imprimir_Detalle(VerV);
